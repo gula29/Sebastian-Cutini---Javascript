@@ -6,7 +6,11 @@ const listaProductos = document.querySelector("#lista-productos");
 
 let articulosCarrito = [];
 
-stockProductos.forEach((producto) => {
+
+fetch("\data.json")
+.then((res)=>res.json())
+.then((data) =>{  
+data.forEach((producto) => {
   const div = document.createElement("div");
 
   div.innerHTML = `
@@ -20,9 +24,9 @@ stockProductos.forEach((producto) => {
   <a href="#" id="${producto.id}" class="btn btn-primary agregar-carrito ">Elegir<i class="fas fa-shopping-cart"></i></a>
  </div>
  </div> `;
-  listaProductos.appendChild(div);
+  listaProductos.append(div);
 });
-
+})
 cargarEventListeners();
 
 function cargarEventListeners() {
