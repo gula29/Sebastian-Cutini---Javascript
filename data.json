@@ -8,7 +8,7 @@
   },
   {
     "id": "2",
-    "nombre": "revistero",
+    "nombre": "Porta taco c/lapicero",
     "precio": 511,
     "categoria": "fibro facil",
     "img": "./public/revistero.jpg"
@@ -22,23 +22,65 @@
   },
   {
     "id": "4",
+    "nombre": "Maletín porta Acrilicos x 49",
+    "precio": 1881,
+    "categoria": "fibro facil",
+    "img": "./public/portaAcrilico49.jpeg"
+  },
+  {
+    "id": "5",
+    "nombre": "Exagono c/fondo",
+    "precio": 159,
+    "categoria": "fibro facil",
+    "img": "./public/exagonos.jpeg"
+  },
+  {
+    "id": "6",
+    "nombre": "Bandeja tolva ",
+    "precio": 151,
+    "categoria": "fibro facil",
+    "img": "./public/Bandejatolva.jpeg"
+  },
+  {
+    "id": "7",
     "nombre": "Perchero c/porta papel y estante",
     "precio": 475,
     "categoria": "pino",
     "img": "./public/percheroc-portapapel.jpg"
   },
   {
-    "id": "5",
+    "id": "8",
     "nombre": "Porta Vino c/porta copa",
     "precio": 715,
     "categoria": "pino",
     "img": "./public/portavino.jpg"
   },
   {
-    "id": "6",
+    "id": "9",
     "nombre": "Porta vela x 1",
     "precio": 88,
     "categoria": "pino",
     "img": "./public/portavela.jpg"
+  },
+  {
+    "id": "10",
+    "nombre": "Cajón Botella/Copa",
+    "precio": 471,
+    "categoria": "pino",
+    "img": "./public/CajónBotellaCopaPino.jpeg"
+  },
+  {
+    "id": "11",
+    "nombre": "Cajón Juguetes",
+    "precio": 2134,
+    "categoria": "pino",
+    "img": "./public/Cajónjuguetes.jpeg"
+  },
+  {
+    "id": "12",
+    "nombre": "Perchero x 3 Nordico",
+    "precio": 617,
+    "categoria": "pino",
+    "img": "./public/Percherox3Nordico.jpeg"
   }
 ]

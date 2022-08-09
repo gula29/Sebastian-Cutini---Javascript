@@ -3,32 +3,16 @@ const contenedorCarrito = document.querySelector("#lista-carrito tbody");
 const vaciarCarritoBtn = document.querySelector("#vaciar-carrito");
 const confirmarPedidoBtn = document.querySelector("#confirmar-carrito");
 const listaProductos = document.querySelector("#lista-productos");
+const contenedorProductos = document.querySelector(".contenedorProductos");
+const pino = document.querySelector("#pino");
+const fibro = document.querySelector("#fibro-facil");
+const contadorCarrito = document.querySelector("#contadorCarrito");
 
 let articulosCarrito = [];
 
-
-fetch("\data.json")
-.then((res)=>res.json())
-.then((data) =>{  
-data.forEach((producto) => {
-  const div = document.createElement("div");
-
-  div.innerHTML = `
-  
-  <div class="card producto" style="width: 15rem ">
-  <img src=${producto.img}  class="card-img-top" alt= "">
-  <div class="card-body">
-  <h5 class="card-title">${producto.nombre}</h3>
-  <h6 class="precio">$ <span>${producto.precio}</h6>
-  </div>
-  <a href="#" id="${producto.id}" class="btn btn-primary agregar-carrito ">Elegir<i class="fas fa-shopping-cart"></i></a>
- </div>
- </div> `;
-  listaProductos.append(div);
-});
-})
 cargarEventListeners();
 
+// Realiza todos los eventos
 function cargarEventListeners() {
   listaProductos.addEventListener("click", agregarProducto);
   carrito.addEventListener("click", eliminarProducto);
@@ -40,26 +24,98 @@ function cargarEventListeners() {
 
     limpiarHTML();
   });
-
+  pino.addEventListener("click", () => {
+    limpiarLista();
+    pintarpino();
+  });
+  fibro.addEventListener("click", () => {
+    limpiarLista();
+    pintarFibro();
+  });
   confirmarPedidoBtn.addEventListener("click", () => {
     comprarProductos();
   });
 }
 
+// Carga los productos de json y los pinta en el HTML
+fetch("data.json")
+  .then((res) => res.json())
+  .then((data) => {
+    data.forEach((producto) => {
+      pintarHtml(producto);
+    });
+  });
+
+//Filtra los productos en el HTMl segun su categoria
+
+function pintarpino() {
+  fetch("data.json")
+    .then((res) => res.json())
+    .then((data) => {
+      data.forEach((producto) => {
+        if (producto.categoria === "pino") {
+          pintarHtml(producto);
+        }
+      });
+    });
+}
+function pintarFibro() {
+  fetch("data.json")
+    .then((res) => res.json())
+    .then((data) => {
+      data.forEach((producto) => {
+        if (producto.categoria === "fibro facil") {
+          pintarHtml(producto);
+        }
+      });
+    });
+}
+
+function pintarHtml(producto) {
+  const listado = document.createElement("div");
+
+  listado.innerHTML = `
+  
+  <div class="card producto" style="width: 13rem ">
+  <img src=${producto.img}  class="card-img-top" alt= "">
+  <div class="card-body">
+  <h3 class="card-title">${producto.nombre.toUpperCase()}</h3>
+  <h5 class="fabricacion">${producto.categoria.toUpperCase()}</h5>
+  <h4 class="precio">$ <span>${producto.precio}</h4>
+  </div>
+  <a href="#" id="${
+    producto.id
+  }" class="btn btn-primary agregar-carrito ">Elegir<i class="fas fa-shopping-cart"></i></a>
+ </div> 
+ </div> `;
+  listaProductos.append(listado);
+}
+
+function limpiarLista() {
+  listaProductos.innerHTML = ``;
+}
+
+// Captura los datos de los productos elegidos para agregar al carrito
 function agregarProducto(e) {
   e.preventDefault();
 
   if (e.target.classList.contains("agregar-carrito")) {
+   // ventana emergente al seleccionar el producto 
+    Toastify({
+      text: "SE AGREGO AL CARRITO",
+      duration: 3000,
+      gravity: "bottom",
+      position: "left",
+    }).showToast();
+
     const productoSeleccionado = e.target.parentElement;
+
     leerDatosProducto(productoSeleccionado);
   }
-  Toastify({
-    text: "SE AGREGO AL CARRITO",
-    duration: 3000,
-    gravity: "bottom",
-    position: "left",
-  }).showToast();
+  
 }
+
+// Elimina el producto que fue agragado al carro 
 
 function eliminarProducto(e) {
   e.preventDefault();
@@ -76,12 +132,13 @@ function eliminarProducto(e) {
     carritoHTML();
   }
 }
+// Recopila los datos del producto elegido para ser utilizados por el DOM
 
 function leerDatosProducto(producto) {
   const infoProducto = {
     imagen: producto.querySelector("img").src,
     titulo: producto.querySelector(".card-title").innerText,
-    precio: producto.querySelector("h6").innerText,
+    precio: producto.querySelector("h4").innerText,
     valor: producto.querySelector("span").innerText,
     id: producto.querySelector("a").getAttribute("id"),
     cantidad: 1,
@@ -92,6 +149,8 @@ function leerDatosProducto(producto) {
 
   carritoHTML();
 }
+
+// Revisa si el producto ya fue elegido , para no duplicarlo y aumentar su cantidad
 
 function cantidadCarrito(infoProducto) {
   const existe = articulosCarrito.some(
@@ -112,6 +171,8 @@ function cantidadCarrito(infoProducto) {
     articulosCarrito = [...articulosCarrito, infoProducto];
   }
 }
+
+// Realiza el aumento de la cantidad del producto , al apretar el + en cantidad
 
 function cantidadbtnMas(e) {
   e.preventDefault();
@@ -142,6 +203,8 @@ function cantidadbtnMas(e) {
   carritoHTML();
 }
 
+//Realiza la resta  de la cantidad del producto , al apretar el - en cantidad
+
 function cantidadbtnMenos(e) {
   e.preventDefault();
 
@@ -170,7 +233,10 @@ function cantidadbtnMenos(e) {
   carritoHTML();
 }
 
+//  pinta todos los productos seleccionados y los totales  en el contenedor del carrito 
+
 function carritoHTML() {
+ 
   limpiarHTML();
 
   articulosCarrito.forEach((producto) => {
@@ -201,6 +267,8 @@ function carritoHTML() {
     0
   );
 
+  contadorCarrito.innerText = cantidadCarrito;
+
   const row2 = document.createElement("tr");
 
   row2.innerHTML = `<td></td>
@@ -216,6 +284,8 @@ function limpiarHTML() {
   contenedorCarrito.innerHTML = "";
 }
 
+// realiza las funciones para luego ser utilizadas por sweetAlert
+
 function totalComprado() {
   const totalCarrito = articulosCarrito.reduce(
     (acc, articulosCarrito) =>
@@ -225,6 +295,8 @@ function totalComprado() {
 
   return totalCarrito;
 }
+    // captura todos los datos ingresasdos en el formulario 
+
 
 function obtenerNombre() {
   const nombre = document.querySelector("#nombre").value;
@@ -238,6 +310,8 @@ function obtenerCorreo() {
   const correo = document.querySelector("#correo").value;
   return correo;
 }
+   // finaliza el pedido , mostrando un alert de los datos ingresados 
+
 
 function comprarProductos() {
   const nombreAsignado = obtenerNombre().toUpperCase();
@@ -245,16 +319,21 @@ function comprarProductos() {
   const correoAsignado = obtenerCorreo();
   const valorPedido = parseFloat(totalComprado());
 
- swal(`SR/A : ${nombreAsignado.toUpperCase() } ,
+  swal(`SR/A : ${nombreAsignado.toUpperCase()} ,
     SU PEDIDO TIENE UN VALOR TOTAL DE $ ${valorPedido};
  nos contactaremos al telefono ${telefonoAsignado}
- o al email ${correoAsignado} para coordinar el pago y el envio de su mercaderia MUCHAS GRACIAS K'ARMI`)
- .then((value) => {
-   swal("GRACIAS POR SU COMPRA");
- });
+ o al email ${correoAsignado} para coordinar el pago y el envio de su mercaderia MUCHAS GRACIAS K'ARMI`).then(
+    (value) => {
+      swal("GRACIAS POR SU COMPRA");
+    }
+  );
   limpiarHTML();
+  articulosCarrito = [];
+  contadorCarrito.innerText = 0
   localStorage.removeItem(`articulosCarrito`);
 }
+
+// localStorage 
 
 function addLocalStorage() {
   localStorage.setItem("articulosCarrito", JSON.stringify(articulosCarrito));
