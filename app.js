@@ -76,7 +76,7 @@ function pintarHtml(producto) {
 
   listado.innerHTML = `
   
-  <div class="card producto" style="width: 13rem ">
+  <div class="card producto" style="width: 190px ; height: 460px ">
   <img src=${producto.img}  class="card-img-top" alt= "">
   <div class="card-body">
   <h3 class="card-title">${producto.nombre.toUpperCase()}</h3>

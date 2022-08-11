@@ -43,7 +43,7 @@
   },
   {
     "id": "7",
-    "nombre": "Perchero c/porta papel y estante",
+    "nombre": "Perchero c/porta papel ",
     "precio": 475,
     "categoria": "pino",
     "img": "./public/percheroc-portapapel.jpg"
